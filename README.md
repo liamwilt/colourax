@@ -1,1 +1,4 @@
 # colourax
+# Install
+# Usage
+# License
