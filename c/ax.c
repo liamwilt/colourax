@@ -10,16 +10,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 GLFWwindow *w;
-GLFWcursor *cursor;
 
-#ifndef Pi
-# define Pi 3.141592653
-#endif
-
-#define GLFW_HAND_CURSOR   0x00036004
-
-double cursor_x, cursor_y;
-double pos_x, pos_y;
 int fb_width, fb_height;
 
 static void error(int error, const char *desc)
@@ -33,19 +24,6 @@ static void key_callback(GLFWwindow *w, int key, int scancode, int action, int m
                 glfwSetWindowShouldClose(w, GL_TRUE);
 }
 
-void writeData(GLFWwindow* w, double pos_x, double pos_y)
-{
-    FILE *f = fopen("data.txt", "a");
-                            
-    fprintf(f,"+++%0.3f: Cursor position: %f %f (%+f %+f)\n",
-           glfwGetTime(),
-           pos_x, pos_y, pos_x - cursor_x, pos_y - cursor_y);
-    
-    cursor_x = pos_x;
-    cursor_y = pos_y;
-    fclose(f);
-}
-   
 void drawCircle(float cx, float cy, float radius) 
 { 
     float num_segments = 360;
@@ -68,7 +46,7 @@ void drawCircle(float cx, float cy, float radius)
 		x = c * x - s * y;
 		y = s * t + c * y;
 	} 
-	glEnd(); 
+	glEnd();
 }
 
 void drawTarget(float cx, float cy, float radius) 
@@ -108,7 +86,7 @@ int main(void)
         if (!glfwInit())
             exit(EXIT_FAILURE);
 
-        w = glfwCreateWindow(1024, 768, "AxTest", NULL, NULL);
+        w = glfwCreateWindow(1280, 720, "AxTest", NULL, NULL);
         if (!w)
         {
             glfwTerminate();
@@ -116,11 +94,10 @@ int main(void)
         }
         
         glfwMakeContextCurrent(w);
-        cursor = glfwCreateStandardCursor(GLFW_HAND_CURSOR);        
-        glfwSetCursor(w, cursor);
-        glfwSetCursorPosCallback(w, writeData);       
+       
         glfwSetKeyCallback(w, key_callback);
         glfwGetFramebufferSize(w, &fb_width, &fb_height);
+        glfwSetWindowPos(w, 300, 150);
            
         do{
             glClear(GL_COLOR_BUFFER_BIT);
@@ -128,13 +105,17 @@ int main(void)
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
             glOrtho(0, fb_width, fb_height, 0, 0, 1);
-            glMatrixMode(GL_MODELVIEW);
-                           
-            drawCircle(1024 * 0.33,768 * 0.25,e[2]);
-            drawCircle(1024 * 0.66,768 * 0.25,m[1]);
+            glMatrixMode(GL_MODELVIEW);            
+               
+            glPushMatrix();
+            glTranslatef(0,1,0);
+            drawCircle(1280 * 0.50, 720 * 0.25,e[2]);
+            glPopMatrix();
             
-            drawTarget(1024 * 0.33, 768 * 0.75,50);
-            drawTarget(1024 * 0.66, 768 * 0.75,50);
+            glPushMatrix();
+            glTranslatef(0,0,0);
+            drawTarget(1280 * 0.50, 720 * 0.75,50);
+            glPopMatrix();
 
             glfwSwapBuffers(w);
             glfwPollEvents();
@@ -142,7 +123,6 @@ int main(void)
         while (!glfwWindowShouldClose(w));
         
         glfwDestroyWindow(w);
-        glfwDestroyCursor(cursor);
             
         glfwTerminate();
         exit(EXIT_SUCCESS);
