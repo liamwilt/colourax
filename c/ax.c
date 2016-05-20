@@ -108,13 +108,23 @@ int main(void)
             glMatrixMode(GL_MODELVIEW);            
                
             glPushMatrix();
-            glTranslatef(0,1,0);
-            drawCircle(1280 * 0.50, 720 * 0.25,e[2]);
+            glTranslatef(0,(float) glfwGetTime() * 100,0);
+            drawCircle(1280 * 0.25, -100,e[2]);
+            glPopMatrix();
+            
+            glPushMatrix();
+            glTranslatef(0,(float) glfwGetTime() * 200,0);
+            drawCircle(1280 * 0.75, -200,h[1]);
             glPopMatrix();
             
             glPushMatrix();
             glTranslatef(0,0,0);
-            drawTarget(1280 * 0.50, 720 * 0.75,50);
+            drawTarget(1280 * 0.25, 720 * 0.75,50);
+            glPopMatrix();
+            
+            glPushMatrix();
+            glTranslatef(0,0,0);
+            drawTarget(1280 * 0.75, 720 * 0.75,50);
             glPopMatrix();
 
             glfwSwapBuffers(w);
