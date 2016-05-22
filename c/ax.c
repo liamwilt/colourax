@@ -6,6 +6,7 @@
 #include <math.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -74,8 +75,12 @@ void drawTarget(float cx, float cy, float radius)
 	glEnd(); 
 }
 
+
 int main(void)
 {
+        srand(time(NULL));
+        int trial = rand() % 150 + 1;
+
         int i;
         float e[3] = {140,120,100};
         float m[3] = {90,80,70};
@@ -114,7 +119,7 @@ int main(void)
             
             glPushMatrix();
             glTranslatef(0,(float) glfwGetTime() * 200,0);
-            drawCircle(1280 * 0.75, -200,h[1]);
+            drawCircle(1280 * 0.75, -200, trial);
             glPopMatrix();
             
             glPushMatrix();
