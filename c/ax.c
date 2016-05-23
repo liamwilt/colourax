@@ -79,12 +79,19 @@ void drawTarget(float cx, float cy, float radius)
 int main(void)
 {
         srand(time(NULL));
-        int trial = rand() % 150 + 1;
+        int trial_e = rand() % (150 + 1 - 110) + 110;
+        int trial_m = rand() % (100 + 1 - 70) + 70;
+        int trial_h = rand() % (60 + 1 - 30) + 30;
+        
+        int train;
+        int velocity_e;
+        int velocity_m;
+        int velocity_h;
 
         int i;
-        float e[3] = {140,120,100};
-        float m[3] = {90,80,70};
-        float h[3] = {60,50,40};
+        //float e[3] = {150,130,110};
+        //float m[3] = {90,80,70};
+        //float h[3] = {60,50,40};
         
         glfwSetErrorCallback(error);
         
@@ -110,17 +117,21 @@ int main(void)
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
             glOrtho(0, fb_width, fb_height, 0, 0, 1);
-            glMatrixMode(GL_MODELVIEW);            
+            glMatrixMode(GL_MODELVIEW);
+            
+            //Stimuli            
                
             glPushMatrix();
             glTranslatef(0,(float) glfwGetTime() * 100,0);
-            drawCircle(1280 * 0.25, -100,e[2]);
+            drawCircle(1280 * 0.25, -100, trial_m);
             glPopMatrix();
             
             glPushMatrix();
             glTranslatef(0,(float) glfwGetTime() * 200,0);
-            drawCircle(1280 * 0.75, -200, trial);
+            drawCircle(1280 * 0.75, -200, trial_e);
             glPopMatrix();
+            
+            //Targets
             
             glPushMatrix();
             glTranslatef(0,0,0);
