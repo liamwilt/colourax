@@ -61,8 +61,8 @@ void drawTarget(float cx, float cy, float radius)
 	float x = radius;//we start at angle = 0 
 	float y = 0; 
     
-	glBegin(GL_LINE_LOOP);
-	glColor3f(1, 1, 1); 
+	glBegin(GL_TRIANGLE_FAN);
+	glColor4f(1, 1, 1, 0.50); 
 	for(int ii = 0; ii < num_segments; ii++) 
 	{ 
 		glVertex2f(x + cx, y + cy);//output vertex 
@@ -75,18 +75,41 @@ void drawTarget(float cx, float cy, float radius)
 	glEnd(); 
 }
 
+void drawTrack01()
+{
+    glLineWidth(1.0);
+    glColor3f(1.0,1.0,1.0);
+    glBegin(GL_LINES);
+    glVertex3f(1280 * 0.25,0.0,0.0);
+    glVertex3f(1280 * 0.25,720 * 0.90,0.0);
+    glEnd();
+}
+
+void drawTrack02()
+{
+    glLineWidth(1.0);
+    glColor3f(1.0,1.0,1.0);
+    glBegin(GL_LINES);
+    glVertex3f(1280 * 0.75,0.0,0.0);
+    glVertex3f(1280 * 0.75,720 * 0.90,0.0);
+    glEnd();
+}
+
 
 int main(void)
 {
         srand(time(NULL));
+        
         int trial_e = rand() % (150 + 1 - 110) + 110;
         int trial_m = rand() % (100 + 1 - 70) + 70;
         int trial_h = rand() % (60 + 1 - 30) + 30;
         
-        int train;
-        int velocity_e;
-        int velocity_m;
-        int velocity_h;
+        int velocity_t;
+        int velocity_e = 100;
+        int velocity_m = 200;
+        int velocity_h = 300;
+        
+        int start_pos[10] = {-100, -200, -300, -400, -500, -600, -700, -800, -900, -1000};
 
         int i;
         //float e[3] = {150,130,110};
@@ -119,28 +142,33 @@ int main(void)
             glOrtho(0, fb_width, fb_height, 0, 0, 1);
             glMatrixMode(GL_MODELVIEW);
             
+            //Tracks
+            
+            drawTrack01();
+            drawTrack02();
+            
             //Stimuli            
                
             glPushMatrix();
-            glTranslatef(0,(float) glfwGetTime() * 100,0);
-            drawCircle(1280 * 0.25, -100, trial_m);
+            glTranslatef(0,(float) glfwGetTime() * velocity_e,0);
+            drawCircle(1280 * 0.25, start_pos[0], trial_m);
             glPopMatrix();
             
             glPushMatrix();
-            glTranslatef(0,(float) glfwGetTime() * 200,0);
-            drawCircle(1280 * 0.75, -200, trial_e);
+            glTranslatef(0,(float) glfwGetTime() * velocity_m,0);
+            drawCircle(1280 * 0.75, start_pos[1], trial_e);
             glPopMatrix();
             
             //Targets
             
             glPushMatrix();
             glTranslatef(0,0,0);
-            drawTarget(1280 * 0.25, 720 * 0.75,50);
+            drawTarget(1280 * 0.25, 720 * 0.90,10);
             glPopMatrix();
             
             glPushMatrix();
             glTranslatef(0,0,0);
-            drawTarget(1280 * 0.75, 720 * 0.75,50);
+            drawTarget(1280 * 0.75, 720 * 0.90,10);
             glPopMatrix();
 
             glfwSwapBuffers(w);
