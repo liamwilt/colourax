@@ -23,6 +23,18 @@ static void key_callback(GLFWwindow *w, int key, int scancode, int action, int m
 {
         if ((key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q) && action == GLFW_PRESS)
                 glfwSetWindowShouldClose(w, GL_TRUE);
+                
+        switch (key)
+        {
+            case GLFW_KEY_A:
+                if (action == GLFW_PRESS)
+                    printf("A_Key Pressed.\n");
+                    break;
+            case GLFW_KEY_L:
+                if (action == GLFW_PRESS)
+                    printf("L_Key Pressed.\n");
+                    break;
+        }
 }
 
 void drawCircle(float cx, float cy, float radius) 
@@ -163,12 +175,12 @@ int main(void)
             
             glPushMatrix();
             glTranslatef(0,0,0);
-            drawTarget(1280 * 0.25, 720 * 0.90,10);
+            drawTarget(1280 * 0.25, 720 * 0.90,20);
             glPopMatrix();
             
             glPushMatrix();
             glTranslatef(0,0,0);
-            drawTarget(1280 * 0.75, 720 * 0.90,10);
+            drawTarget(1280 * 0.75, 720 * 0.90,20);
             glPopMatrix();
 
             glfwSwapBuffers(w);
