@@ -1,3 +1,5 @@
+typedef struct
+
 static void error(int error, const char *desc)
 {
         fputs(desc, stderr);
@@ -23,8 +25,7 @@ static void key_callback(GLFWwindow *w, int key, int scancode, int action, int m
 
 void drawCircle(float cx, float cy, float radius) 
 { 
-    float num_segments = 360;
-	float theta = 2 * 3.1415926 / num_segments; 
+	float theta = 2 * 3.1415926 / 360; 
 	float c = cosf(theta);//precalculate the sine and cosine
 	float s = sinf(theta);
 	float t;
@@ -34,7 +35,7 @@ void drawCircle(float cx, float cy, float radius)
     
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3f(1, 0, 1); 
-	for(int ii = 0; ii < num_segments; ii++) 
+	for(int ii = 0; ii < 360; ii++) 
 	{ 
 		glVertex2f(x + cx, y + cy);//output vertex 
         
@@ -48,8 +49,7 @@ void drawCircle(float cx, float cy, float radius)
 
 void drawTarget(float cx, float cy, float radius) 
 { 
-    float num_segments = 360;
-	float theta = 2 * 3.1415926 / num_segments; 
+	float theta = 2 * 3.1415926 / 360; 
 	float c = cosf(theta);//precalculate the sine and cosine
 	float s = sinf(theta);
 	float t;
@@ -59,7 +59,7 @@ void drawTarget(float cx, float cy, float radius)
     
 	glBegin(GL_TRIANGLE_FAN);
 	glColor4f(1, 1, 1, 0.50); 
-	for(int ii = 0; ii < num_segments; ii++) 
+	for(int ii = 0; ii < 360; ii++) 
 	{ 
 		glVertex2f(x + cx, y + cy);//output vertex 
         
