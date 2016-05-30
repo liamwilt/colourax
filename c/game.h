@@ -1,10 +1,10 @@
-typedef struct Circle Circle;
+typedef struct circle CIRCLE;
 
-Circle *stimulus01(float cx, float cy);
-Circle *stimulus02(float cx, float cy);
+CIRCLE *drawStimulus(float cx, float cy);
+//Circle *stimulus02(float cx, float cy);
 
-Circle *target01(float cx, float cy);
-Circle *target02(float cx, float cy);
+CIRCLE *drawTarget(float cx, float cy);
+//Circle *target02(float cx, float cy);
 
 static void error(int error, const char *desc)
 {
@@ -29,7 +29,7 @@ static void key_callback(GLFWwindow *w, int key, int scancode, int action, int m
         }
 }
 
-void drawCircle(float cx, float cy) 
+void drawStimulus(float cx, float cy) 
 { 
 	float theta = 2 * 3.1415926 / 360; 
 	float c = cosf(theta);//precalculate the sine and cosine
