@@ -18,11 +18,11 @@ int main(void)
 {
         srand(time(NULL));
         
-        int trial_e = rand() % (150 + 1 - 110) + 110;
-        int trial_m = rand() % (100 + 1 - 70) + 70;
-        int trial_h = rand() % (60 + 1 - 30) + 30;
+        //int trial_e = rand() % (150 + 1 - 110) + 110; randomized radii for original concept
+        //int trial_m = rand() % (100 + 1 - 70) + 70;
+        //int trial_h = rand() % (60 + 1 - 30) + 30;
         
-        int velocity_t;
+        int velocity_t = 75;
         int velocity_e = 100;
         int velocity_m = 200;
         int velocity_h = 300;
@@ -69,24 +69,24 @@ int main(void)
                
             glPushMatrix();
             glTranslatef(0,(float) glfwGetTime() * velocity_e,0);
-            drawCircle(1280 * 0.25, start_pos[0], trial_m);
+            drawCircle(1280 * 0.25, start_pos[0]);
             glPopMatrix();
             
             glPushMatrix();
             glTranslatef(0,(float) glfwGetTime() * velocity_m,0);
-            drawCircle(1280 * 0.75, start_pos[1], trial_e);
+            drawCircle(1280 * 0.75, start_pos[1]);
             glPopMatrix();
             
             //Targets
             
             glPushMatrix();
             glTranslatef(0,0,0);
-            drawTarget(1280 * 0.25, 720 * 0.90,20);
+            drawTarget(1280 * 0.25, 720 * 0.90);
             glPopMatrix();
             
             glPushMatrix();
             glTranslatef(0,0,0);
-            drawTarget(1280 * 0.75, 720 * 0.90,20);
+            drawTarget(1280 * 0.75, 720 * 0.90);
             glPopMatrix();
 
             glfwSwapBuffers(w);
