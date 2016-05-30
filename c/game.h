@@ -1,3 +1,5 @@
+typedef struct circle CIRCLE;
+
 static void error(int error, const char *desc)
 {
         fputs(desc, stderr);
@@ -28,7 +30,7 @@ void drawStimulus(float cx, float cy)
 	float s = sinf(theta);
 	float t;
 
-	float x = 50;//we start at angle = 0 
+	float x = 50;
 	float y = 0; 
     
 	glBegin(GL_TRIANGLE_FAN);
@@ -52,7 +54,7 @@ void drawTarget(float cx, float cy)
 	float s = sinf(theta);
 	float t;
 
-	float x = 50;//we start at angle = 0 
+	float x = 50; 
 	float y = 0; 
     
 	glBegin(GL_LINE_LOOP);
