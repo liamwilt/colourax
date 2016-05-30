@@ -14,20 +14,24 @@ GLFWwindow *w;
 
 #include "game.h"
 
+typedef struct circle
+        {
+            float cy[10];
+        }CIRCLE;
+
 int main(void)
 {
-        srand(time(NULL));
+        CIRCLE stimulus;
+        CIRCLE *ptr_stimulus;
         
-        //int trial_e = rand() % (150 + 1 - 110) + 110; randomized radii for original concept
-        //int trial_m = rand() % (100 + 1 - 70) + 70;
-        //int trial_h = rand() % (60 + 1 - 30) + 30;
+        ptr_stimulus = &stimulus;
         
+        ptr_stimulus->cy[10] = {-100, -200, -300, -400, -500, -600, -700, -800, -900, -1000};
+
         int velocity_t = 75;
         int velocity_e = 100;
         int velocity_m = 200;
         int velocity_h = 300;
-        
-        int start_pos[10] = {-100, -200, -300, -400, -500, -600, -700, -800, -900, -1000};
 
         int i, fb_width, fb_height;
         //float e[3] = {150,130,110};
@@ -69,12 +73,12 @@ int main(void)
                
             glPushMatrix();
             glTranslatef(0,(float) glfwGetTime() * velocity_e,0);
-            drawCircle(1280 * 0.25, start_pos[0]);
+            drawStimulus(1280 * 0.25, start_pos[0]);
             glPopMatrix();
             
             glPushMatrix();
             glTranslatef(0,(float) glfwGetTime() * velocity_m,0);
-            drawCircle(1280 * 0.75, start_pos[1]);
+            drawStimulus(1280 * 0.75, start_pos[1]);
             glPopMatrix();
             
             //Targets
