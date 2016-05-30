@@ -14,17 +14,25 @@ GLFWwindow *w;
 
 #include "game.h"
 
+struct circle 
+{
+    float cy;
+};
+
 int main(void)
 {
 
-        typedef struct circle
-            {
-                float position;
-            }CIRCLE;
-                        
-        CIRCLE starting;
-                        
-        starting.position = -100;
+        CIRCLE position[10];                
+        position[0].cy = -100;
+        position[1].cy = -200;
+        position[2].cy = -300;
+        position[3].cy = -400;
+        position[4].cy = -500;
+        position[5].cy = -600;
+        position[6].cy = -700;
+        position[7].cy = -800;
+        position[8].cy = -900;
+        position[9].cy = -1000;
         
         int velocity_t = 75;
         int velocity_e = 100;
@@ -32,9 +40,6 @@ int main(void)
         int velocity_h = 300;
 
         int i, fb_width, fb_height;
-        //float e[3] = {150,130,110};
-        //float m[3] = {90,80,70};
-        //float h[3] = {60,50,40};
         
         glfwSetErrorCallback(error);
         
@@ -71,12 +76,12 @@ int main(void)
                
             glPushMatrix();
             glTranslatef(0,(float) glfwGetTime() * velocity_h,0);
-            drawStimulus(1280 * 0.25, starting.position);
+            drawStimulus(1280 * 0.25, position[0].cy);
             glPopMatrix();
             
             glPushMatrix();
             glTranslatef(0,(float) glfwGetTime() * velocity_m,0);
-            drawStimulus(1280 * 0.75, starting.position);
+            drawStimulus(1280 * 0.75, position[0].cy);
             glPopMatrix();
             
             //Targets
