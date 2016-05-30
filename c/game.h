@@ -1,11 +1,3 @@
-typedef struct circle CIRCLE;
-
-CIRCLE *drawStimulus(float cx, float cy);
-//Circle *stimulus02(float cx, float cy);
-
-CIRCLE *drawTarget(float cx, float cy);
-//Circle *target02(float cx, float cy);
-
 static void error(int error, const char *desc)
 {
         fputs(desc, stderr);
