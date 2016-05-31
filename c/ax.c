@@ -15,11 +15,7 @@ GLFWwindow *w;
 #include "game.h"
 
 int main(void)
-{
-
-        CIRCLE circ;
-        CIRCLE *cp;
-        
+{        
         cp = &circ;
         
         cp->sy1 = -100;
@@ -54,7 +50,6 @@ int main(void)
         }
         
         glfwMakeContextCurrent(w);
-       
         glfwSetKeyCallback(w, key_callback);
         glfwGetFramebufferSize(w, &fb_width, &fb_height);
         glfwSetWindowPos(w, 300, 150);
