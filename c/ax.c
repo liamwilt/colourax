@@ -14,25 +14,25 @@ GLFWwindow *w;
 
 #include "game.h"
 
-struct circle 
-{
-    float cy;
-};
-
 int main(void)
 {
 
-        CIRCLE position[10];                
-        position[0].cy = -100;
-        position[1].cy = -200;
-        position[2].cy = -300;
-        position[3].cy = -400;
-        position[4].cy = -500;
-        position[5].cy = -600;
-        position[6].cy = -700;
-        position[7].cy = -800;
-        position[8].cy = -900;
-        position[9].cy = -1000;
+        CIRCLE circ;
+        CIRCLE *cp;
+        
+        cp = &circ;
+        
+        cp->sy1 = -100;
+        cp->sx1 = 1280 * 0.25;
+        
+        cp->sy2 = -200;
+        cp->sx2 = 1280 * 0.75;
+        
+        cp->tx1 = 1280 * 0.25;
+        cp->ty1 = 720 * 0.90;
+        
+        cp->tx2 = 1280 * 0.75;
+        cp->ty2 = 720 * 0.90;
         
         int velocity_t = 75;
         int velocity_e = 100;
@@ -76,24 +76,24 @@ int main(void)
                
             glPushMatrix();
             glTranslatef(0,(float) glfwGetTime() * velocity_h,0);
-            drawStimulus(1280 * 0.25, position[0].cy);
+            drawStimulus(cp->sx1, cp->sy1);
             glPopMatrix();
             
             glPushMatrix();
             glTranslatef(0,(float) glfwGetTime() * velocity_m,0);
-            drawStimulus(1280 * 0.75, position[0].cy);
+            drawStimulus(cp->sx2, cp->sy2);
             glPopMatrix();
             
             //Targets
             
             glPushMatrix();
             glTranslatef(0,0,0);
-            drawTarget(1280 * 0.25, 720 * 0.90);
+            drawTarget(cp->tx1, cp->ty1);
             glPopMatrix();
             
             glPushMatrix();
             glTranslatef(0,0,0);
-            drawTarget(1280 * 0.75, 720 * 0.90);
+            drawTarget(cp->tx2, cp->ty2);
             glPopMatrix();
 
             glfwSwapBuffers(w);
