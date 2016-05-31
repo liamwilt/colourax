@@ -1,4 +1,7 @@
-typedef struct circle CIRCLE;
+typedef struct circle 
+{
+    float sx1, sy1, sx2, sy2, tx1, ty1, tx2, ty2, x1, y1, x2, y2, radius1, radius2;
+}CIRCLE;
 
 static void error(int error, const char *desc)
 {
@@ -7,6 +10,14 @@ static void error(int error, const char *desc)
 
 static void key_callback(GLFWwindow *w, int key, int scancode, int action, int mods)
 {
+        // Calculate difference between centres
+	    // distX = Center1.X – Center2.X
+	    // distY = Center1.Y – Center2.Y
+	    // Get distance with Pythagoras
+	    // dist = sqrt((distX * distX) + (distY * distY))
+	    
+	return dist <= (R1 + R2)
+
         if ((key == GLFW_KEY_ESCAPE || key == GLFW_KEY_Q) && action == GLFW_PRESS)
                 glfwSetWindowShouldClose(w, GL_TRUE);
                 
@@ -23,7 +34,7 @@ static void key_callback(GLFWwindow *w, int key, int scancode, int action, int m
         }
 }
 
-void drawStimulus(float cx, float cy) 
+void drawStimulus(float sx, float sy) 
 { 
 	float theta = 2 * 3.1415926 / 360; 
 	float c = cosf(theta);//precalculate the sine and cosine
@@ -37,7 +48,7 @@ void drawStimulus(float cx, float cy)
 	glColor3f(1, 0, 1); 
 	for(int ii = 0; ii < 360; ii++) 
 	{ 
-		glVertex2f(x + cx, y + cy);//output vertex 
+		glVertex2f(x + sx, y + sy);//output vertex 
         
 		//apply the rotation matrix
 		t = x;
@@ -47,7 +58,7 @@ void drawStimulus(float cx, float cy)
 	glEnd();
 }
 
-void drawTarget(float cx, float cy) 
+void drawTarget(float tx, float ty) 
 { 
 	float theta = 2 * 3.1415926 / 360; 
 	float c = cosf(theta);//precalculate the sine and cosine
@@ -61,7 +72,7 @@ void drawTarget(float cx, float cy)
 	glColor4f(1, 1, 1, 0.50); 
 	for(int ii = 0; ii < 360; ii++) 
 	{ 
-		glVertex2f(x + cx, y + cy);//output vertex 
+		glVertex2f(x + tx, y + ty);//output vertex 
         
 		//apply the rotation matrix
 		t = x;
