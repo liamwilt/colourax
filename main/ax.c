@@ -16,7 +16,7 @@ GLFWwindow *window;
 #define SCREEN_HEIGHT 768
 #define M_PI 3.141592653
 #define RADIUS 50
-#define CIRCLE_NUM 2
+#define CIRCLE_NUM <--- Undefined as the circles should be generated once every second
 #define TARGET_NUM 2
 
 struct Circle {
@@ -169,8 +169,8 @@ void initCircleArray(Circle circle[], int length) {
     target[0].x = SCREEN_WIDTH * (1/4);
     target[1].x = SCREEN_WIDTH * (3/4);
 
-    target[0].y = SCREEN_HEIGHT * (5/6);
-    target[1].y = SCREEN_HEIGHT * (5/6);
+    target[0].y = SCREEN_HEIGHT - RADIUS;
+    target[1].y = SCREEN_HEIGHT - RADIUS;
 
     // init circles    
     for (i = 0; i < length; i++) {
