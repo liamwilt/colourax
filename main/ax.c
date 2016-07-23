@@ -8,34 +8,39 @@
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 768
 #define M_PI        3.141592653
-#define SIDE_NUM    36          // numnber of triangles we use to draw a circle  
-#define RADIUS      50          // radius of a circle 
-#define TOTAL_TIME  5.0         // 5 minutes 
-#define NOTES       2           // number of node in the application
-#define COLOR_NUM   3           // number of color RGB
+#define SIDE_NUM    36              // numnber of triangles we use to draw a circle  
+#define RADIUS      50              // radius of a circle 
+#define TOTAL_TIME  5.0             // 5 minutes 
+#define NOTES       2               // number of node in the application
+#define COLOR_NUM   3               // number of color RGB
 
 #define Target_Y    RADIUS
-#define Stimulus_Y  (SCREEN_HEIGHT - RADIUS)
-#define SPEED       100         // moving speed
+#define Stimulus_Y  (SCREEN_HEIGHT + (2*RADIUS))
+#define SPEED       10              // movement speed
 
-#define SLEEP_TIME  1           // 1 seconds
-#define ALPHA_TIME  0.25    // 0.25 seconds
+#define SLEEP_TIME  0.02            // 0.01 seconds
+#define DELAY_TIME  1               // 1 seconds
+#define ALPHA_TIME  0.25            // 0.25 seconds
+#define ALPHA_STEP  1.0 / 250.0     // fade away in 0.25 seconds each step will be 0.004 seconds
 #define BLACK       255
+#define BLACK_F     0.0
 #define WHITE       0
 #define TRUE        1
 #define FALSE       0
 
 struct Circle {
-    GLfloat x; // center points
+    GLfloat x;                      // center points
     GLfloat y;
     GLfloat z;
-    GLfloat radius; // circle radius
-    GLint numberOfSides; // number of side
-    GLfloat xVector; // horizontal vecotr
-    GLfloat yVector; // vertical vector
-    GLfloat colour[3]; // color of the circle
+    GLfloat radius;                 // circle radius
+    GLint numberOfSides;            // number of side
+    GLfloat xVector;                // horizontal vecotr
+    GLfloat yVector;                // vertical vector
+    GLfloat colour[3];              // color of the circle
     int movable;
     GLfloat alphaStartTime;
+    int fadeAway;
+    GLfloat alpha;
 };
 
 typedef struct Circle Circle;
@@ -111,13 +116,14 @@ int main(void) {
  
     GLFWwindow *window;
 
-    // application time 
+    // application times 
     static GLfloat last = 0;
-    // color changing time 
+    static GLfloat lastDelay = 0; 
     GLfloat timer = glfwGetTime();
     GLfloat start;
     start = timer;
     last = timer;
+    lastDelay = timer;
 
     int i;
     int movedCircle;
@@ -161,6 +167,10 @@ int main(void) {
     glfwSetKeyCallback(window, key_callback);
 
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+    // enable blend mode to have transparent effects  
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     movedCircle = 0;
 
     while (timer - start < total
@@ -177,14 +187,21 @@ int main(void) {
                 drawStimulus(stimuliCircles[i]);
                 drawTarget(targetCircles[i]);
             }
-
         }
         // whether we should move the circle 
+        if (movedCircle < NOTES) {
+            if (timer - lastDelay > DELAY_TIME) {
+                lastDelay = timer;
+                stimuliCircles[movedCircle].movable = TRUE;
+                movedCircle++;
+            }
+        }
+
         if (timer - last > SLEEP_TIME) {
             last = timer;
-            movedCircle = movedCircle % NOTES;
-            moveDownward(&stimuliCircles[movedCircle]);
-            movedCircle++;
+            for (i = 0; i < NOTES; i++) {
+                moveDownward(&stimuliCircles[i]);
+            }
         }
 
         glfwSwapBuffers(window);
@@ -199,18 +216,10 @@ int main(void) {
 }
 
 void moveDownward(Circle * circle) {
-    // printf("%f ", circle->y);
     int i;
     if (circle->movable == TRUE) {
         circle->y += circle->yVector * SPEED;
-    } else if (glfwGetTime() - circle->alphaStartTime
-            >= ALPHA_TIME) {
-        circle->movable = TRUE;
-        for (i = 0; i < COLOR_NUM; i++) {
-            circle->colour[i] = WHITE;
-        }
     }
-
 
     if (circle->y < 0 - RADIUS) {
         circle->y = Stimulus_Y;
@@ -240,12 +249,15 @@ Circle initCircle(GLfloat xVal, GLfloat yVal) {
         c.yVector = -1;
     }
 
-    c.movable = TRUE;
+    c.movable = FALSE;
+    c.alphaStartTime = -1;
     c.numberOfSides = SIDE_NUM;
     c.x = xVal;
     c.y = yVal;
     c.z = 0;
     c.radius = RADIUS;
+    c.fadeAway = FALSE;
+    c.alpha = 1.0;
     return c;
 }
 
@@ -273,13 +285,15 @@ void keyPress(int index, int key) {
     int i;
     if (c1->movable == TRUE) { // the circle is moving 
         if (abs(c1->y - c2->y) < RADIUS * 2.0) { // the stimulus and target touch 
-            // start to invisible 
+            // begin alpha modification 
             c1->alphaStartTime = glfwGetTime();
-            // fade away 
+            // fade away
+            c1->fadeAway = TRUE;
+            c1->alpha = 1.0; 
             for (i = 0; i < COLOR_NUM; i++) {
                 c1->colour[i] = BLACK;
             }
-            // stopping 
+            // cease motion 
             c1->movable = FALSE;
             // write to file 
             writeData(TRUE, key);
@@ -307,37 +321,44 @@ void drawStimulus(Circle circle) {
     GLfloat circleVerticesX[numberOfVertices];
     GLfloat circleVerticesY[numberOfVertices];
     GLfloat circleVerticesZ[numberOfVertices];
-    GLfloat colour[circle.numberOfSides * 3];
 
     int i;
     int j;
     for (i = 0; i < numberOfVertices; i++) {
 
-        j = i * 3;
-        colour[j] = circle.colour[0];
-        colour[j + 1] = circle.colour[1];
-        colour[j + 2] = circle.colour[2];
-
         circleVerticesX[i] = circle.x + (circle.radius * cos(i * doublePi / circle.numberOfSides));
         circleVerticesY[i] = circle.y + (circle.radius * sin(i * doublePi / circle.numberOfSides));
         circleVerticesZ[i] = circle.z;
     }
-
-    GLfloat allCircleVertices[numberOfVertices * 3];
-
-    for (i = 0; i < numberOfVertices; i++) {
-        allCircleVertices[i * 3] = circleVerticesX[i];
-        allCircleVertices[(i * 3) + 1] = circleVerticesY[i];
-        allCircleVertices[(i * 3) + 2] = circleVerticesZ[i];
+    if (circle.fadeAway == TRUE) {
+        if (circle.alpha > 0.000) {
+            for (i = 0; i < numberOfVertices; i++) {
+                glBegin(GL_TRIANGLES);
+                glColor4f(circle.colour[0], circle.colour[1], circle.colour[2], circle.alpha);
+                glVertex3f(circle.x, circle.y, circle.z);
+                glVertex3f(circleVerticesX[i], circleVerticesY[i], circle.z);
+                glVertex3f(circleVerticesX[(i + 1) % numberOfVertices],
+                        circleVerticesY[(i + 1) % numberOfVertices],
+                        circle.z);
+                glEnd();
+            }
+            circle.alpha -= ALPHA_STEP;
+        } else {
+            circle.fadeAway = FALSE;
+            circle.y = Stimulus_Y;
+            circle.movable = TRUE;
+            circle.alpha = 1.0;
+        }
+    } else {
+        for (i = 0; i < numberOfVertices; i++) {
+            glBegin(GL_TRIANGLES);
+            glColor4f(circle.colour[0], circle.colour[1], circle.colour[2], circle.alpha);
+            glVertex3f(circle.x, circle.y, circle.z);
+            glVertex3f(circleVerticesX[i], circleVerticesY[i], circle.z);
+            glVertex3f(circleVerticesX[(i + 1) % numberOfVertices], circleVerticesY[(i + 1) % numberOfVertices], circle.z);
+            glEnd();
+        }
     }
-
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-    glVertexPointer(3, GL_FLOAT, 0, allCircleVertices);
-    glColorPointer(3, GL_FLOAT, 0, colour);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, numberOfVertices);
-    glDisableClientState(GL_COLOR_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void drawTarget(Circle circle) {
