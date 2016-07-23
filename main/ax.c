@@ -18,10 +18,10 @@
 #define Stimulus_Y  (SCREEN_HEIGHT + (2*RADIUS))
 #define SPEED       10              // movement speed
 
-#define SLEEP_TIME  0.02            // 0.01 seconds
+#define SLEEP_TIME  0.01            // 0.01 seconds
 #define DELAY_TIME  1               // 1 seconds
-#define ALPHA_TIME  0.25            // 0.25 seconds
-#define ALPHA_STEP  1.0 / 250.0     // fade away in 0.25 seconds each step will be 0.004 seconds
+#define ALPHA_TIME  0.33            // 0.33 seconds
+#define ALPHA_STEP  1.0 / 250.0     
 #define BLACK       255
 #define BLACK_F     0.0
 #define WHITE       0
@@ -128,12 +128,9 @@ int main(void) {
     int i;
     int movedCircle;
 
-    // total running time
-    GLfloat total = TOTAL_TIME * 60; // 1 minutes has 60 seconds
-
-    // output file name
+    GLfloat total = TOTAL_TIME * 60;
+    
     char text[] = "output.txt";
-    // output stream
     out = fopen(text, "w");
 
     srand(time(NULL));
