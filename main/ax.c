@@ -76,7 +76,7 @@ int main(void) {
 
         // set the correct order of appearance 
         for (i = 0; i < BARS; i++) {
-            drawHollowCircle(targetCircles[i]);
+            drawTarget(targetCircles[i]);
             drawQueue(stimuli[i]);
         }
         // whether we should move the circle         
@@ -231,7 +231,7 @@ void writeData(int state, int key) {
     }
 }
 
-void drawCircle(Circle * circle) {
+void drawStimulus(Circle * circle) {
     GLint numberOfVertices = 1 + circle->numberOfSides;
 
     GLfloat doublePi = 2.0f * M_PI;
@@ -264,7 +264,7 @@ void drawCircle(Circle * circle) {
     }
 }
 
-void drawHollowCircle(Circle circle) {
+void drawTarget(Circle circle) {
     GLint numberOfVertices = circle.numberOfSides + 1;
     int i;
     int j;
@@ -315,7 +315,7 @@ void drawQueue(Queue * q) {
     if (q != NULL) {
         head = q->head;
         while (head != NULL) {
-            drawCircle(&(head->circle));
+            drawStimulus(&(head->circle));
             head = head->next;
         }
     }
