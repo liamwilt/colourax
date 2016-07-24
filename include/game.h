@@ -111,13 +111,13 @@ Queue * stimuli[BARS];
 // array of target circles
 Circle targetCircles[BARS];
 
-void drawCircle(Circle * circle);
+void drawStimulus(Circle * circle);
 /**
  * draw a filled circle
  * @param circle
  */
 
-void drawHollowCircle(Circle circle);
+void drawTarget(Circle circle);
 /**
  * draw a hollow circle
  * @param circle
