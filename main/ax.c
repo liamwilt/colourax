@@ -11,7 +11,8 @@
 #define SIDE_NUM    36              // numnber of triangles we use to draw a circle  
 #define RADIUS      50              // radius of a circle 
 #define TOTAL_TIME  5.0             // 5 minutes 
-#define NOTES       2               // number of node in the application
+#define NOTES       20              // number of "notes" in the application
+#define BARS        2
 #define COLOR_NUM   3               // number of color RGB
 
 #define Target_Y    RADIUS
@@ -49,7 +50,7 @@ int keys[NOTES] = {GLFW_KEY_A, GLFW_KEY_L};
 FILE * out;
 
 Circle stimuliCircles[NOTES];
-Circle targetCircles[NOTES];
+Circle targetCircles[BARS];
 
 void drawStimulus(Circle circle);
 /**
@@ -164,6 +165,7 @@ int main(void) {
     glfwSetKeyCallback(window, key_callback);
 
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+    
     // enable blend mode to have transparent effects  
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -176,7 +178,7 @@ int main(void) {
 
         timer = glfwGetTime();
 
-        for (i = 0; i < NOTES; i++) {
+        for (i = 0; i < NOTES || BARS; i++) {
             if (stimuliCircles[i].movable == TRUE) {
                 drawTarget(targetCircles[i]);
                 drawStimulus(stimuliCircles[i]);
