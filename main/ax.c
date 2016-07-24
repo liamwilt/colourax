@@ -41,7 +41,7 @@ int main(void) {
         return -1;
     }
 
-    window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Dice", NULL, NULL);
+    window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Ax", NULL, NULL);
 
     if (!window) {
         glfwTerminate();
