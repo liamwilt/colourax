@@ -20,7 +20,6 @@ int main(void) {
     last = timer;
     lastDelay = timer;
 
-
     int i;
     int movedCircle;
 
@@ -67,6 +66,7 @@ int main(void) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     movedCircle = 0;
+    
     // Loop until the user closes the window or program terminates
     while (timer - start < total
             && !glfwWindowShouldClose(window)) {
@@ -87,14 +87,12 @@ int main(void) {
             movedCircle++;
         }
 
-
         if (timer - last > SLEEP_TIME) {
             last = timer;
             for (i = 0; i < BARS; i++) {
                 moveDownward(stimuli[i]);
             }
         }
-
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -181,13 +179,13 @@ static void key_callback(GLFWwindow *w, int key, int scancode,
     }
     for (i = 0; i < BARS; i++) { // look for the right key
         if (key == keys[i]) {
-            keyClick(i, key);
+            keyPress(i, key);
             break;
         }
     }
 }
 
-void keyClick(int index, int key) {
+void keyPress(int index, int key) {
     Queue * q = stimuli[index];
     Circle * c2 = &targetCircles[index];
     Node * head = get_front(q);
