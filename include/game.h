@@ -130,7 +130,7 @@ void writeData(int state, int key);
  * @param key the pressed key
  */
 
-void keyClick(int index, int key);
+void keyPress(int index, int key);
 /**
  * fire when a A or L is clicked
  * @param index A is 0, L is 1
