@@ -59,7 +59,7 @@ int main(void) {
     glfwSetKeyCallback(window, key_callback);
 
     // set background color to white
-    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+    glClearColor(0.9f, 0.9f, 0.9f, 0.0f);
 
     // enable blend mode to have transparent effects  
     glEnable(GL_BLEND);
@@ -145,9 +145,9 @@ Circle initCircle(GLfloat xVal, GLfloat yVal) {
     int i;
     Circle c;
 
-    // set color to white
+    // set color to black
     for (i = 0; i < COLOR_NUM; i++) {
-        c.colour[i] = WHITE;
+        c.colour[i] = BLACK;
     }
 
     c.xVector = 0;
@@ -203,7 +203,7 @@ void keyPress(int index, int key) {
                 c1->fadeAway = TRUE;
                 c1->alpha = 1.0;
                 for (i = 0; i < COLOR_NUM; i++) {
-                    c1->colour[i] = BLACK_F;
+                    c1->colour[i] = WHITE;
                 }
 
                 // stopping 
@@ -249,7 +249,7 @@ void drawStimulus(Circle * circle) {
 
     for (i = 0; i < numberOfVertices; i++) {
         glBegin(GL_TRIANGLES);
-        glColor4f(circle->colour[0], circle->colour[1], circle->colour[2], circle->alpha);
+        glColor4f(0.9, 0, 0, circle->alpha);
         glVertex3f(circle->x, circle->y, circle->z);
         glVertex3f(circleVerticesX[i], circleVerticesY[i], circle->z);
         glVertex3f(circleVerticesX[(i + 1) % numberOfVertices], circleVerticesY[(i + 1) % numberOfVertices], circle->z);

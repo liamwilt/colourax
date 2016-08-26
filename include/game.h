@@ -15,8 +15,7 @@
 #define DELAY_TIME  1           
 #define ALPHA_TIME  0.33
 #define ALPHA_STEP  1.0 / 250.0
-#define BLACK       255
-#define BLACK_F     0.0
+#define BLACK       0
 #define WHITE       0
 #define TRUE        1
 #define FALSE       0
